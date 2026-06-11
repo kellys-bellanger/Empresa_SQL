@@ -224,3 +224,42 @@ insert into templeado (cnif, cnombre, capellido, ndepartamentoid, ncargoid, dfec
 ('114', 'test', 'error', 1, 2, '2026-06-01', -100.00, 'error@empresa.com', '00000000', 30, 'm');
 go
 
+--PARTE IV
+
+update templeado
+set nsalario = nsalario * 1.10
+go
+
+update templeado
+set nsalario = nsalario * 1.20
+where ndepartamentoid = 1
+go
+
+update templeado
+set cemail = 'juan.perez@gmail.com'
+where nempleadoid = 3
+go
+
+update templeado 
+set ncargoid = 1
+where nempleadoid = 5
+go
+
+update templeado
+set ndepartamentoid = 4
+where nempleadoid in (5, 6)
+go
+
+update templeado
+set bactivo = 0
+where nsalario <500
+go
+
+update tproyecto
+set dfechafinalizacion = '2026-12-01'
+where nproyectoid = 2
+go
+
+insert into templeadoproyecto (nempleadoid, nproyectoid)
+values (2, 3);
+go
