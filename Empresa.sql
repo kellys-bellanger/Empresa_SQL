@@ -1,76 +1,83 @@
-Use master
-GO
+use master
+go
 
-Create database EmpresaSQL
-GO
+if exists (select name from sys.databases where name = 'empresasql')
+begin
+    drop database empresasql;
+end
+go
 
-use EmpresaSQL
-GO 
+create database empresasql
+go
 
---Tabla Departamento
-create table TDepartamento (
-    nDepartamentoID int identity(1,1),
-    cNombreDepartamento nvarchar(100) not null,
+use empresasql
+go 
 
-    constraint PK_TDepartamento primary key (nDepartamentoID),
-    constraint UQ_NombreDepartamento unique (cNombreDepartamento)
+-- tabla tdepartamento
+create table tdepartamento (
+    ndepartamentoid int identity(1,1),
+    cnombredepartamento nvarchar(100) not null,
+
+    constraint pk_tdepartamento primary key (ndepartamentoid),
+    constraint uq_nombredepartamento unique (cnombredepartamento)
 )
-GO
+go
 
---Tabla Cargo
-create table TCargo (
-    nCargoID int identity(1,1),
-    cNombreCargo nvarchar(100) not null,
+-- tabla tcargo
+create table tcargo (
+    ncargoid int identity(1,1),
+    cnombrecargo nvarchar(100) not null,
     
-    constraint PK_TCargo primary key (nCargoID),
-    constraint UQ_NombreCargo unique (cNombreCargo)
+    constraint pk_tcargo primary key (ncargoid),
+    constraint uq_nombrecargo unique (cnombrecargo)
 )
-GO
+go
 
---Tabla Empleado
-create table TEmpleado (
-    nEmpleadoID int identity(1,1),
-    cNIF nvarchar(20) null, 
-    cNombre nvarchar(50) not null,
-    cApellido nvarchar(50) not null,
-    nDepartamentoID int,
-    nCargoID int,
-    dFechaContratacion date,
-    nSalario decimal(10,2),
+-- 5.tabla templeado
+create table templeado (
+    nempleadoid int identity(1,1),
+    cnif nvarchar(20) null, 
+    cnombre nvarchar(50) not null,
+    capellido nvarchar(50) not null,
+    ndepartamentoid int,
+    ncargoid int,
+    dfechacontratacion date,
+    nsalario decimal(10,2),
 
-    constraint PK_TEmpleado primary key (nEmpleadoID),
-    constraint UQ_NIF unique (cNIF), 
-    constraint CHK_Salario Mayor A 300 check (nSalario > 300),
-    constraint DF_FechaContratacion default getdate() for dFechaContratacion,
-    constraint FK_TEmpleado_TDepartamento foreign key (nDepartamentoID) 
-        references TDepartamento(nDepartamentoID),
-    constraint FK_TEmpleado_TCargo foreign key (nCargoID) 
-        references TCargo(nCargoID)
+    constraint pk_templeado primary key (nempleadoid),
+    constraint uq_nif unique (cnif), 
+    constraint chk_salario_mayor_a_300 check (nsalario > 300),
+    constraint df_fechacontratacion default getdate() for dfechacontratacion,
+    constraint fk_templeado_tdepartamento foreign key (ndepartamentoid) 
+        references tdepartamento(ndepartamentoid),
+    constraint fk_templeado_tcargo foreign key (ncargoid)
+        references tcargo(ncargoid)
 )
-GO
+go
 
---Tabla Proyecto
-create table TProyecto (
-    nProyectoID int identity(1,1),           
-    cNombreProyecto nvarchar(150) not null,   
-    dFechaInicio date not null,              
-    dFechaFinalizacion date null,            
+--tabla tproyecto
+create table tproyecto (
+    nproyectoid int identity(1,1),           
+    cnombreproyecto nvarchar(150) not null,   
+    dfechainicio date not null,              
+    dfechafinalizacion date null,            
 
-    constraint PK_TProyecto primary key (nProyectoID)
+    constraint pk_tproyecto primary key (nproyectoid)
 )
-GO
+go
 
--- Tabla de relación entre Empleado y Proyecto
-create table TEmpleadoProyecto (
-    nEmpleadoID int,
-    nProyectoID int,
-    dFechaAsignacion date constraint DF_FechaAsignacion default getdate(), -- (Opcional, buena práctica)
+-- tabla  TEmpleadoProyecto para relación muchos a muchos
+create table templeadoproyecto (
+    nempleadoid int,
+    nproyectoid int,
+    dfechaasignacion date constraint df_fechaasignacion default getdate(),
 
-    constraint PK_TEmpleadoProyecto primary key (nEmpleadoID, nProyectoID),
-    constraint FK_TEmpleadoProyecto_TEmpleado foreign key (nEmpleadoID) 
-        references TEmpleado(nEmpleadoID),
-    constraint FK_TEmpleadoProyecto_TProyecto foreign key (nProyectoID) 
-        references TProyecto(nProyectoID)
+    constraint pk_templeadoproyecto primary key (nempleadoid, nproyectoid),
+    
+    constraint fk_templeadoproyecto_templeado foreign key (nempleadoid) 
+        references templeado(nempleadoid),
+        
+    constraint fk_templeadoproyecto_tproyecto foreign key (nproyectoid) 
+        references tproyecto(nproyectoid)
 )
-GO
-
+go
