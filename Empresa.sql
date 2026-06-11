@@ -386,12 +386,48 @@ group by bactivo
 select count(*) as total_proyectos
 from tproyecto
 
+--PARTE VII
+
+SELECT constraint_name, constraint_type
+from information_schema.table_constraints
 
 
+alter table templeado
+drop constraint chk_empleado_edad
+go
 
+alter table templeado 
+drop constraint uq_empleado_email
+go
 
+--
+alter table templeado
+add constraint chk_empleado_edad check (nedad >= 18 and nedad <= 65)
+go
 
+alter table templeado
+add constraint uq_empleado_email unique (cemail)
 
+drop table templeado
+go
 
+drop table tproyecto
+go
 
+drop table templeado
+go
 
+drop table tcargo
+go
+
+drop table tdepartamento
+go
+
+drop table tsucursal
+go
+
+use master
+go
+
+drop database empresaql
+go
