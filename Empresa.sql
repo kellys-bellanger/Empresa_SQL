@@ -263,3 +263,29 @@ go
 insert into templeadoproyecto (nempleadoid, nproyectoid)
 values (2, 3);
 go
+
+--PARTE V
+
+delete from templeado
+where cnif = '110'
+go
+
+delete from templeado
+where bactivo = 0
+go
+
+delete from templeadoproyecto
+where nproyectoid = 1
+go
+
+delete from tproyecto
+where nproyectoid = 1
+go
+
+delete from templeadoproyecto
+where nempleadoid = 1
+go
+
+delete from tdepartamento
+where ndepartamentoid = 6
+go
