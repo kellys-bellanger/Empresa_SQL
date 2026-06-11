@@ -289,3 +289,109 @@ go
 delete from tdepartamento
 where ndepartamentoid = 6
 go
+
+--PARTE VI
+
+select * from tdepartamento
+select * from tcargo
+select * from templeado
+select * from tproyecto
+select * from templeadoproyecto
+
+--Mostrar todos los empleados ordenados por apellido
+select capellido, cnombre
+from templeado
+order by capellido asc
+
+--Mostrar empleados con salario mayor a 1,000.
+select cnombre, capellido, nsalario
+from templeado
+where nsalario > 1000
+
+--Mostrar empleados activos.
+select cnombre, capellido, bactivo
+from templeado
+where bactivo = 1 
+
+--Mostrar empleados contratados durante el año actual.
+select cnombre, capellido, dfechacontratacion
+from templeado
+where dfechacontratacion like '2026%'
+
+--Mostrar empleados y el nombre de su departamento.
+select cnombre, cnombredepartamento
+from templeado e
+inner join tdepartamento d on e.ndepartamentoid = d.ndepartamentoid
+
+--Mostrar empleados y el nombre de su cargo.
+select cnombre, capellido, cnombrecargo
+from templeado e
+inner join tcargo i on e.ncargoid = i.ncargoid
+
+--Mostrar empleados asignados a proyectos.
+select * from templeadoproyecto
+
+--Mostrar cantidad de empleados por departamento
+select d.cnombredepartamento, count(*) as cantidad_empleados
+from templeado e
+inner join tdepartamento d on e.ndepartamentoid = d.ndepartamentoid
+group by d.cnombredepartamento
+
+--Mostrar salario promedio por departamento.
+select d.cnombredepartamento, avg(nsalario) as salario_promedio
+from templeado e
+inner join tdepartamento d on e.ndepartamentoid = d.ndepartamentoid
+group by d.cnombredepartamento
+
+--Mostrar salario máximo y mínimo por departamento.
+select d.cnombredepartamento, min(nsalario) as salario_minimo, max(nsalario) as salario_maximo
+from templeado e
+inner join tdepartamento d on e.ndepartamentoid = d.ndepartamentoid
+group by d.cnombredepartamento
+
+--Mostrar los proyectos con más de dos empleados asignados
+select p.cnombreproyecto, count(*) as cantidad_empleados
+from tproyecto p
+inner join templeadoproyecto tp on p.nproyectoid = tp.nproyectoid
+group by p.cnombreproyecto
+having count(*) > 2
+
+--Mostrar empleados cuyo apellido inicia con "G".
+select cnombre, capellido
+from templeado
+where capellido like 'G%'
+
+--Mostrar empleados ordenados por salario descendente.
+select cnombre, nsalario
+from templeado
+order by nsalario desc
+
+--Mostrar los tres salarios más altos.
+select TOP 3 cnombre, nsalario
+from templeado
+ORDER BY nsalario DESC
+
+--Mostrar empleados con edad entre 25 y 40 años.
+select cnombre, nedad
+from templeado
+where nedad between 25 and 40
+
+--Mostrar cantidad total de empleados activos
+select count(*) as empleados_activos
+from templeado
+where bactivo = 1
+group by bactivo
+
+--Mostrar el total de proyectos registrados.
+select count(*) as total_proyectos
+from tproyecto
+
+
+
+
+
+
+
+
+
+
